@@ -23,12 +23,15 @@ Clone this project onto your environmment to customize setup parameters, as expl
 ## Prepare information for deployment
 
 The following parameters will be used to customize the deployment of the ChromaDB service on Cloud Run. Please review and prepare them for the deployment steps below.
-* `<YOUR_BUCKET_NAME>`: the name of the Google Cloud Storage bucket where the ChromaDB data will be stored. This bucket will be created in the next step.
-* `<REGION>`: the region where the Google Cloud Storage bucket and the Cloud Run service will be deployed. Choose a region based on your requirements and the location of your users. For example, `europe-west1` for the EU West region, `us-central1` for the US Central region.
-* `<YOUR_PROJECT_ID>`: the ID of your Google Cloud project. You can find your project ID in the Google Cloud Console, under the project name or in the project settings page.
-* `<SERVICE_NAME>`: the name of the Cloud Run service (e.g. `chroma`).
-* `<SERVICE_ACCOUNT>`: the GCP service account to run the service. Usually, the default Compute Engine SA is used, which can be found on the Google Cloud project IAM page. But it is a better security practice to have a dedicated SA created for the service.
-* `<API_TOKEN>`: the API token to be used for authentication. This token will be used to authenticate requests to the ChromaDB service. You can generate a token using the `generate_token.sh` script provided in this repository.
+| Parameter             | Description |
+|-----------------------|-------------|
+| `<YOUR_BUCKET_NAME>`  | The name of the Google Cloud Storage bucket where the ChromaDB data will be stored. This bucket will be created in the next step. |
+| `<REGION>`            | The region where the Google Cloud Storage bucket and the Cloud Run service will be deployed. Choose a region based on your requirements and the location of your users, e.g., `europe-west1` for the EU West region, `us-central1` for the US Central region. |
+| `<YOUR_PROJECT_ID>`   | The ID of your Google Cloud project. You can find your project ID in the Google Cloud Console, under the project name or in the project settings page. |
+| `<SERVICE_NAME>`      | The name of the Cloud Run service (e.g., `chroma`). |
+| `<SERVICE_ACCOUNT>`   | The GCP service account to run the service. Usually, the default Compute Engine service account is used, which can be found on the Google Cloud project IAM page. However, it is a better security practice to have a dedicated service account created for the service. |
+| `<API_TOKEN>`         | The API token to be used for authentication. This token will be used to authenticate requests to the ChromaDB service. You can generate a token using the `generate_token.sh` script provided in this repository. |
+
 
 ## Step 1: Create a Google Cloud Storage Bucket
 
@@ -38,7 +41,7 @@ First, create a dedicated GCS bucket for persistent storage of the ChromaDB data
 gsutil mb -p <YOUR_PROJECT_ID> -l <REGION> gs://<YOUR_BUCKET_NAME>/
 ```
 
-Replace `<REGION>` with the desired region for your bucket. For example, `europe-west1` for the EU West region, `us-central1` for the US Central region. This bucket will be used to store the ChromaDB data, ensuring data persistence even if the Cloud Run service is scaled down or restarted. You can choose a different region based on your requirements and the location of your users.
+Replace `<REGION>` with the desired region for your bucket. For example, `europe-west1` for the EU West region, `us-central1` for the US Central region. This bucket will be used to store the ChromaDB data, ensuring data persistence even if the Cloud Run service is scaled down or restarted.
 
 
 ## Step 2: Generate a custom Cloud Run yaml file
