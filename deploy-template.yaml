@@ -1,0 +1,55 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ${SERVICE_NAME}
+  labels:
+    cloud.googleapis.com/location: ${SERVICE_REGION}
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '1'
+        autoscaling.knative.dev/minScale: '${MIN_INSTANCES}'
+        run.googleapis.com/client-name: cloud-console
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/startup-cpu-boost: 'true'
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      serviceAccountName: ${SERVICE_ACCOUNT}
+      containers:
+      - image: chromadb/chroma
+        ports:
+        - containerPort: 8000
+        env:
+        - name: CHROMA_SERVER_AUTHN_CREDENTIALS
+          value: ${API_TOKEN}
+        - name: CHROMA_SERVER_AUTHN_PROVIDER
+          value: chromadb.auth.token_authn.TokenAuthenticationServerProvider
+        - name: PERSIST_DIRECTORY
+          value: /db_path
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 4Gi
+        volumeMounts:
+        - name: gcs-1
+          mountPath: /db_path
+        startupProbe:
+          timeoutSeconds: 240
+          periodSeconds: 240
+          failureThreshold: 1
+          tcpSocket:
+            port: 8000
+      volumes:
+      - name: gcs-1
+        csi:
+          driver: gcsfuse.run.googleapis.com
+          readOnly: false
+          volumeAttributes:
+            bucketName: ${BUCKET_NAME}
+  traffic:
+  - percent: 100
+    latestRevision: true
