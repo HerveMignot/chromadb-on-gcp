@@ -103,7 +103,8 @@ from chromadb.config import Settings
 # Create a Chroma client with the service URL and API token
 client = chromadb.HttpClient(host="<YOUR_SERVICE_URL>", port=443, ssl=True,
                              settings=Settings(chroma_client_auth_provider="chromadb.auth.token_authn.TokenAuthClientProvider",
-                                               chroma_client_auth_credentials="abcdefghijklmnopqrstuvwxyz"))
+                                               chroma_client_auth_credentials="abcdefghijklmnopqrstuvwxyz",
+                                               anonymized_telemetry=False))
 ```
 
 Now you can use the `client` object to interact with the ChromaDB service, such as creating collections, adding documents, querying documents, etc. Refer to the Chroma documentation for more details on how to use the Python client library.
