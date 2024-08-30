@@ -5,14 +5,15 @@ metadata:
   labels:
     cloud.googleapis.com/location: ${SERVICE_REGION}
   annotations:
+    run.googleapis.com/launch-stage: beta
     run.googleapis.com/ingress: all
+    run.googleapis.com/maxScale: '1'
+    run.googleapis.com/minScale: '${MIN_INSTANCES}'
+
 spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/maxScale: '1'
-        autoscaling.knative.dev/minScale: '${MIN_INSTANCES}'
-        run.googleapis.com/client-name: cloud-console
         run.googleapis.com/execution-environment: gen2
         run.googleapis.com/startup-cpu-boost: 'true'
     spec:
