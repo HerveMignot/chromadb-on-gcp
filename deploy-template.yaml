@@ -30,14 +30,14 @@ spec:
         - name: CHROMA_SERVER_AUTHN_PROVIDER
           value: chromadb.auth.token_authn.TokenAuthenticationServerProvider
         - name: PERSIST_DIRECTORY
-          value: /db_path
+          value: /data
         resources:
           limits:
             cpu: 1000m
             memory: 4Gi
         volumeMounts:
         - name: gcs-1
-          mountPath: /db_path
+          mountPath: /data
         startupProbe:
           timeoutSeconds: 240
           periodSeconds: 240
